@@ -1,0 +1,11 @@
+# folders
+.vscode/
+objs/
+logs/
+
+
+# files
+*.o
+*.a
+*.sh
+cub3D*
