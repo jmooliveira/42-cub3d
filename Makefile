@@ -1,47 +1,56 @@
 #makefile
+NAME		=	cub3d
 
-NAME	=	cub3d
+#flags
+CC			=	cc
+CFLAGS		=	-Wall -Werror -Wextra -Iinclude -Ilib/include -IMLX42/include
 
-CC		=	cc
-CFLAGS	=	-Wall -Werror -Wextra -g3
-LIBFT	=	./lib
-LIBMLX	=	./MLX42
+#directories
+SRC_DIR		=	src
+OBJ_DIR 	=	obj
+LIBFT_DIR	=	lib/libft
+MLX_DIR		=	MLX42
 
-LIBS	=	$(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm $(LIBFT)/libft.a
+#fonts
+SRC			=	$(SRC_DIR)/main.c \
+				
+OBJ			= 	$(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-HEADER	=	-I ./lib/include -I $(LIBMLX)/build
+#library
+LIBFT		=	$(LIBFT_DIR)/libft.a
+MLX 		=	$(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-SRCS	=	./src/main.c \
+#rules
+all: $(NAME)
 
-OBJS	=	$(SRCS:.c=.o)
+$(NAME): $(OBJ) $(LIBFT)
+	@echo "🔨 Compiling $(NAME)..."
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
+	@echo "✅ Compilation completed!"
 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-RM		=	rm -rf
+$(LIBFT):
+	@echo "📚 Compiling libft..."
+	@make -s -C $(LIBFT_DIR)
 
-all: libft libmlx $(NAME)
-
-libmlx:
-	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
-
-libft:
-	@make -C $(LIBFT)
-
-$(NAME): $(OBJS) libft
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
-
-%.o:%.c
-	$(CC) $(CFLAGS) -o $@ -c $< ${HEADER}
-
+#clear
 clean:
-	$(RM) $(OBJS)
-	make -C $(LIBFT) clean
-	@rm -rf $(LIBMLX)/build
+	@rm -rf $(OBJ_DIR)
+	@make -s -C $(LIBFT_DIR) clean
+	@echo "🧹 object removed."
 
 fclean: clean
-	$(RM) $(NAME)
-	make -C $(LIBFT) fclean
+	@rm -f $(NAME)
+	@make -s -C $(LIBFT_DIR) fclean
+	@echo "🗑️ binary removed."
 
 re: fclean all
+
+run: all
+	@./$(NAME) maps/valid/basic.cub
 
 val:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./cub3d
