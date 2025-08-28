@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jemorais <jemorais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeff <jeff@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 15:16:09 by jemorais          #+#    #+#             */
-/*   Updated: 2024/11/29 14:07:58 by jemorais         ###   ########.fr       */
+/*   Updated: 2025/08/26 13:50:58 by jeff             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ char	*ft_strdup(const char *s);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *read_line, char const *buffer);
-void	ft_strlcat(char *ptr, const char *buffer, size_t size);
+// void	ft_strlcat(char *ptr, const char *buffer, size_t size);
 
 #endif

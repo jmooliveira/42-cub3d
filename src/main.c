@@ -1,34 +1,38 @@
+// main.c
+
 #include "cub3d.h"
 
 int	main(int argc, char **argv)
 {
+	t_config	cfg;
+	t_game		game;
+
 	if(argc != 2)
 	{
 		fprintf(stderr, "Error: use: %s <file.cub\n", argv[0]);
 		return 1;
 	}
-	parse_file(argv[1]);
-	return (0);
-}
-
-void	parse_file(const char *filename)
-{
-	int	fd;
-	char	buffer[BUFFERS_SIZE + 1];
-	ssize_t	bytes_read;
-
-	fd = open(filename, O_RDONLY);
-	if(fd < 0)
+	ft_memset(&cfg, 0, sizeof(t_config));
+	parse_file(argv[1], &cfg);
+		if (!validate_map(&cfg))
 	{
-		perror("Error: file not open");
-		exit(1);
+		free_config(&cfg);
+		return (1);
 	}
-	while((bytes_read = read(fd, buffer, BUFFERS_SIZE)) > 0)
+	printf("\nMap validation successful!\n");
+	printf("Player found at (%d, %d) facing %c\n", 
+	cfg.player_x, cfg.player_y, cfg.player_dir);
+	// *****
+    if (!init_game(&game, &cfg))
 	{
-		buffer[bytes_read] = '\0';
-		printf("%s", buffer);
-	}
-	if(bytes_read < 0)
-		perror("Error: filename read error");
-	close(fd);
+        free_config(&cfg);
+        return (1);
+    }
+    printf("Game initialized! Use WASD to move, ESC to exit.\n");
+    mlx_loop_hook(game.mlx, game_loop, &game);
+    mlx_loop(game.mlx);
+    mlx_terminate(game.mlx);
+	// *****
+	free_config(&cfg);
+	return EXIT_SUCCESS;
 }
