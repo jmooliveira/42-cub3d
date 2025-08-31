@@ -9,13 +9,13 @@ void	parse_file(const char *filename, t_config *cfg)
 	int		line_num;
 
 	fd = open(filename, O_RDONLY);
-	if(fd < 0)
+	if (fd < 0)
 	{
 		perror("Error: file not open");
 		exit(1);
 	}
 	line_num = 0;
-	while((line = get_next_line(fd)) != NULL)
+	while ((line = get_next_line(fd)) != NULL)
 	{
 		printf("linha[%d]: %s", line_num, line);
 		line_num++;

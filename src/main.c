@@ -14,7 +14,7 @@ int	main(int argc, char **argv)
 	}
 	ft_memset(&cfg, 0, sizeof(t_config));
 	parse_file(argv[1], &cfg);
-		if (!validate_map(&cfg))
+	if (!validate_map(&cfg))
 	{
 		free_config(&cfg);
 		return (1);
