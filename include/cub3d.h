@@ -32,10 +32,10 @@ typedef struct s_config
 	int		player_x;
 	int		player_y;
 	char	player_dir;
-} t_config;
+}	t_config;
 
 typedef struct s_game
-{	
+{
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	t_config	*cfg;
@@ -43,28 +43,27 @@ typedef struct s_game
 	double		player_y;
 	double		player_angle;
 	double		fov;
-} t_game;
+}	t_game;
 
+void		parse_file(const char *filename, t_config *cfg);
 
-void	parse_file(const char *filename, t_config *cfg);
+int			parse_texture(const char *filename, t_config *cfg);
 
-int		parse_texture(const char *filename, t_config *cfg);
+int			parse_color(char *line, t_config *cfg);
+int			parse_rgb(char *str, int *rgb);
 
-int		parse_color(char *line, t_config *cfg);
-int		parse_rgb(char *str, int *rgb);
+int			parse_map_line(char *line, t_config *cfg);
+int			is_map_line(char *line);
 
-int		parse_map_line(char *line, t_config *cfg);
-int		is_map_line(char *line);
-
-int		validate_map(t_config *cfg);
-int		find_player(t_config *cfg);
-int		validate_map_characters(t_config *cfg);
-int		check_map_closed(t_config *cfg);
-int		get_map_height(t_config *cfg);
-int		check_horizontal_walls(t_config *cfg, int row);
-int		check_vertical_walls(t_config *cfg);
-int		check_reachable_spaces(t_config *cfg);
-int		is_surrounded_by_walls(t_config *cfg, int y, int x);
+int			validate_map(t_config *cfg);
+int			find_player(t_config *cfg);
+int			validate_map_characters(t_config *cfg);
+int			check_map_closed(t_config *cfg);
+int			get_map_height(t_config *cfg);
+int			check_horizontal_walls(t_config *cfg, int row);
+int			check_vertical_walls(t_config *cfg);
+int			check_reachable_spaces(t_config *cfg);
+int			is_surrounded_by_walls(t_config *cfg, int y, int x);
 
 int			init_game(t_game *game, t_config *cfg);
 void		render_frame(t_game *game);
@@ -74,7 +73,7 @@ uint32_t	rgb_to_color(int r, int g, int b);
 void		handle_input(void *param);
 void		game_loop(void *param);
 
-void	free_config(t_config *cfg);
-void	free_split(char **split);
+void		free_config(t_config *cfg);
+void		free_split(char **split);
 
 #endif

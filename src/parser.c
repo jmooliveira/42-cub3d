@@ -15,14 +15,16 @@ void	parse_file(const char *filename, t_config *cfg)
 		exit(1);
 	}
 	line_num = 0;
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		printf("linha[%d]: %s", line_num, line);
 		line_num++;
-		if(line[0] == '\n' || line[0] == '\0')
+		if (line[0] == '\n' || line[0] == '\0')
 		{
 			free(line);
-			continue;
+			line = get_next_line(fd);
+			continue ;
 		}
 		if (parse_texture(line, cfg))
 			;
@@ -33,6 +35,7 @@ void	parse_file(const char *filename, t_config *cfg)
 		else
 			fprintf(stderr, "Error: invalid line -> %s", line);
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 }
@@ -60,33 +63,33 @@ int	parse_texture(const char *line, t_config *cfg)
 		cfg->text_ea = ft_strtrim(line + 3, " \t\n");
 		return (1);
 	}
-return (0);
+	return (0);
 }
 
 //parser_color.c
 int	parse_color(char *line, t_config *cfg)
 {
-    if (ft_strncmp(line, "F ", 2) == 0)
-    {
-        if (parse_rgb(line + 2, cfg->floor) == 0)
-            return (1);
-        else
-        {
-            fprintf(stderr, "Error: invalid floor color format\n");
-            return (0);
-        }
-    }
-    if (ft_strncmp(line, "C ", 2) == 0)
-    {
-        if (parse_rgb(line + 2, cfg->ceil) == 0)
-            return (1);
-        else
-        {
-            fprintf(stderr, "Error: invalid ceiling color format\n");
-            return (0);
-        }
-    }
-    return (0);
+	if (ft_strncmp(line, "F ", 2) == 0)
+	{
+		if (parse_rgb(line + 2, cfg->floor) == 0)
+			return (1);
+		else
+		{
+			fprintf(stderr, "Error: invalid floor color format\n");
+			return (0);
+		}
+	}
+	if (ft_strncmp(line, "C ", 2) == 0)
+	{
+		if (parse_rgb(line + 2, cfg->ceil) == 0)
+			return (1);
+		else
+		{
+			fprintf(stderr, "Error: invalid ceiling color format\n");
+			return (0);
+		}
+	}
+	return (0);
 }
 
 int	parse_rgb(char *str, int *rgb)
@@ -182,10 +185,10 @@ int	is_map_line(char *line)
 	has_valid_char = 0;
 	while (line[i])
 	{
-		if (line[i] == '0' || line[i] == '1' || 
-			line[i] == 'N' || line[i] == 'S' || 
-			line[i] == 'E' || line[i] == 'W' || 
-			line[i] == ' ')
+		if (line[i] == '0' || line[i] == '1'
+			|| line[i] == 'N' || line[i] == 'S'
+			|| line[i] == 'E' || line[i] == 'W'
+			|| line[i] == ' ')
 		{
 			if (line[i] != ' ')
 				has_valid_char = 1;
